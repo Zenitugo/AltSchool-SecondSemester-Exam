@@ -75,6 +75,15 @@ I gave an instruction for the scripts to carry out the following commands:  `vag
     7. Migrate the server
     8. Restart apache 2.
 
+### PROOF OF DEPLOYMENT
+
+![laravel app deployed on master](./Access%20to%20Laravel%20Application%20with%20Master%20VM.png)
+
+Ip address of master: 192.168.33.10
+
+
+
+
 
 ## About Ansible
 
