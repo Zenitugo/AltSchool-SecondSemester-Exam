@@ -1,0 +1,44 @@
+---
+
+- name: Deploy PHP Application and create Cron jobs on Slave node
+  hosts: slave-server
+  become: yes
+  tasks:
+    - name: copy bash script named "master-deploy.sh"
+      ansible.builtin.copy:
+           src: /home/vagrant/master-deploy.sh
+           dest: /tmp/master-deploy.sh
+           mode: '0777'
+
+    - name: Execute bash script
+      command: bash master-deploy.sh
+      ignore_errors: yes
+
+# Verify PHP Application Accessibility
+    - name: Make a request to the PHP page
+      ansible.builtin.uri:
+           url: http://{{ ansible_host }}
+           return_content: yes
+      register: page_content
+
+    - name: Check if "Laracast" is in the page contents
+      ansible.builtin.fail:
+           msg: "The page does not contain 'Laracast'"
+      when: "'Laracast' not in page_content.content|default('')"
+
+    - name: Report success
+      debug:
+           msg: "The page returned successfully and contains 'Laracast'"
+
+#Configuration of SSMTP
+    - name: Configure ssmtp
+      include_role:
+        name: ssmtp
+
+#Create a cron job to check the server’s uptime every 12 am.
+    - name: Create Cron Job
+      cron:
+           name: Check Server Uptime
+           minute: 0
+           hour: 0
+           job: "/usr/bin/uptime >> /var/log/uptime.log 2>&1 | mail -s 'Uptime Report' ugochiukaegbu19@gmail.com"

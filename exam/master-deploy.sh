@@ -34,7 +34,13 @@
     sudo systemctl enable mysql
 
 #Secure MySQL Installation
-    sudo mysql_secure_installation
+    sudo mysql_secure_installation<<EOF
+         n
+         n
+         n
+         n
+         y
+EOF
 
 
 #INSTALLING PHP USING PPA:ONDRE
@@ -143,3 +149,6 @@ EOF
 
 #RESTART APACHE
    sudo systemctl restart apache2
+
+
+

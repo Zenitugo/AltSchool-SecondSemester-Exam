@@ -1,0 +1,6 @@
+---
+- name: Copy ssmtp configuration file
+  copy:
+    src: /home/vagrant/Ansible/roles/ssmtp/files/ssmtp.conf
+    dest: /home/vagrant/etc/ssmtp/ssmtp.conf
+  notify: Restart SSMTP

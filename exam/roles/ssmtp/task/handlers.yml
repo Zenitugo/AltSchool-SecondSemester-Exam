@@ -1,0 +1,6 @@
+---
+- name: Restart SSMTP
+  service:
+     name: ssmtp
+     state: restarted
+
