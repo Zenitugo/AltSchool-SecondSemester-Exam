@@ -50,7 +50,6 @@ EOF
     sudo apt-get update
     sudo apt-get install libapache2-mod-php php php-common php-xml php-mysql php-gd php-mbstring php-tokenizer php-json php-bcmath php-curl php-zip unzip -y     
 
-
 #CONFIGURATION OF PHP
     sudo sed -i 's/cgi.fix_pathinfo=0/' /etc/php/8.2/apache2/php.ini
     #After configuring PHP we need to restart apache
@@ -59,10 +58,7 @@ EOF
     curl -sS https://getcomposer.org/installer | php
     #Move the downloaded binary to the system directory
     sudo mv composer.phar /usr/local/bin/composer
-    #Verify the version
-    composer --version
-
-
+    
 #CONFIGURATION OF APACHE WEB SERVER
     sudo tee -a  /etc/apache2/sites-available/laravel.conf<<EOF
         <VirtualHost *:80>
@@ -87,7 +83,7 @@ EOF
     sudo a2enmod rewrite
     echo -e "\n\nEnabling Laravel virtual host"
     sudo a2ensite laravel
-echo -e "\n\nDissabling Apache default host"
+    echo -e "\n\nDissabling Apache default host"
     sudo a2dissite 000-default
 
 #Restart Apache
@@ -119,24 +115,30 @@ echo -e "\n\nDissabling Apache default host"
    sudo php artisan key:generate
 
 
-# MySQL DATABASE CREDENTIALS
-   OLD_USER="root"
-   OLD_PASSWORD="  "
-   DATABASE_NAME="zenitugo"
-   NEW_USER="Debby"
-   NEW_USER_PASSWORD="sapphire"
+#Configuration of mysql database
+   sudo mysql start
 
+  sudo mysql -u root<<EOF
+#Functions to execute a MYSQL query
+      execute_query() {
+          local query=$1
+          local database=$2
 
-#SET UP DATABASE
-   mysql -u "$OLD_USER" <<EOF
-   CREATE DATABASE $DATABASE_NAME;
-       CREATE USER '$NEW_USER'@'localhost' IDENTIFIED BY '$NEW_USER_PASSWORD';
-       GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$NEW_USER'@'localhost';
-       FLUSH PRIVILEGES;
+          ALTER USER 'root'@'localhost'
+          IDENTIFIED WITH mysql_native_password BY 'DB_PASSWORD';
+          FLUSH PRIVILEGES;
+          mysql -u "$DB_USERNAME" -p "$DB_PASSWORD" "$database" -e "$query"
+}
+
+#Function to create a database
+           create_database(){
+           local database=$1
+           execute_query "CREATE DATABASE $database"
+}
 EOF
 
 
-#Change some environmental variables inthe .env file
+#Change some environmental variables in the .env file
    sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE=zenitugo/' /var/www/html/laravel/.env
    sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=sapphire/'  /var/www/html/laravel/.env
    sudo sed -i 's/DB_USERNAME=root/DB_USERNAME=Debby/' /var/www/html/laravel/.env
