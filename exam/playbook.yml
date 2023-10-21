@@ -2,16 +2,18 @@
 
 - name: Deploy PHP Application and create Cron jobs on Slave node
   hosts: slave-server
-  become: yes
   tasks:
+    - name: Locate the present working directory for ansible
+      shell: pwd
+    
     - name: copy bash script named "master-deploy.sh"
-      ansible.builtin.copy:
-           src: /home/vagrant/master-deploy.sh
-           dest: /tmp/master-deploy.sh
-           mode: '0777'
+      copy:
+        src: /home/vagrant/master-deploy.sh
+        dest: /home/vagrant/Ansible/master-deploy.sh
+        mode: '0777'
 
     - name: Execute bash script
-      command: bash master-deploy.sh
+      shell: bash /home/vagrant/Ansible/master-deploy.sh
       ignore_errors: yes
 
 # Verify PHP Application Accessibility
@@ -35,10 +37,10 @@
       include_role:
         name: ssmtp
 
-#Create a cron job to check the server’s uptime every 12 am.
+#Create a cron job to check the server’s uptime every 12am.
     - name: Create Cron Job
       cron:
-           name: Check Server Uptime
-           minute: 0
-           hour: 0
-           job: "/usr/bin/uptime >> /var/log/uptime.log 2>&1 | mail -s 'Uptime Report' ugochiukaegbu19@gmail.com"
+        name: Check Server Uptime
+        minute: 0
+        hour: 0
+        job: bash /home/vagrant/Ansible/master-deploy.sh >> /var/log/syslog 2>&1 | mail -s 'Ansible Report' ugochiukaegbu19@gmail.com
