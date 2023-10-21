@@ -52,6 +52,7 @@ EOF
 
 #Spin up the slave and  master machine up
       vagrant up
+#Create a key pair in the master machine and copy the public keys to the slave machine
       master_public_key=$(vagrant ssh master -c "sudo su - vagrant -c 'cat ~/.ssh/ansible_master.pub'")
       vagrant ssh slave -c "echo '$master_public_key' | sudo su - vagrant -c 'tee -a ~/.ssh/authorized_keys'"
 

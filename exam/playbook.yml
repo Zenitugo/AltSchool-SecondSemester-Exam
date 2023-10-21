@@ -41,4 +41,4 @@
            name: Check Server Uptime
            minute: 0
            hour: 0
-           job: top | mail -s 'Ansible Report' ugochiukaegbu19@gmail.com
+           job: "/usr/bin/uptime >> /var/log/uptime.log 2>&1 | mail -s 'Uptime Report' ugochiukaegbu19@gmail.com"
