@@ -1,13 +1,6 @@
+# PROJECT SOLUTION 
 
-
-## PHP Laravel GitHub Repository:
-
-[LARAVEL REPOSITORY LINK](https://github.com/laravel/laravel)
-
-
-## PROJECT SOLUTION 
-
-### About Vagrant.sh
+## About Vagrant.sh
 To automate the provisioning of two systems I created a bash script called **vagrant.sh**.
 In this script I started by initialising vagrant with the command called `vagrant init`
 
@@ -16,9 +9,9 @@ I configured the VMs in the script, declaring hostname, ip address, base box and
 I gave a command for the script to `cat` these configyrations into the **Vagrantfile** that was initialised.
 
 
-I gave an instruction for the scripts to carry out the following commands:  `vagrant up slave`, `vagrant up master` and `vagrant ssh master`
+I gave an instruction for the scripts to carry out the following commands:  `vagrant up` and `vagrant ssh master`
 
-### About Master-deploy.sh
+## About Master-deploy.sh
 **This is a script that contains:**
 - The commands to automate the deployment of LAMP STACK on the master machine. This involved:
     
@@ -72,5 +65,25 @@ Ip address of master: 192.168.33.10
 
 
 ## About Ansible
+I created a directory called Ansible and in it I placed three files and a directory. The files were:
 
- 
+- Inventory/hosts file: this file contains the ip address, password for the master machine to act as a controller to target the slave vms while running ansible-playbook.
+
+- ansible.cfg: This file is meant to override the ansible configuration in the  /etc directory. 
+
+- playbbok.yml
+The directory named roles contained one directory called `ssmtp` and  inside of it contained another two directories named `files` and `task`. The roles directory contained the configuration of ssmtp so that I could schedule cron jobs to check the server uptime.
+
+
+## About Playbook.yml
+The tasks carried out by the play book are:
+- Executing the bash script to deploy the laravel application
+- Verifying the application accessibility by giving a command for to register the content of the application and report success when the word 'Laracast' is found
+- Creating cron jobs to check the server up time
+
+
+## USAGE OF BASH SCRIPT IN ANSIBLE
+To use the bash scrip in ansible, edit the servername in the virtual host with the Slave IP address.
+
+### PROOF OF DEPLOYMENT
+![laravel app deployed on slave](./Access%20to%20Laravel%20Application%20with%20Slave%20VM.png) 

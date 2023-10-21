@@ -12,3 +12,9 @@
 - Using an Ansible playbook:
    1. Execute the bash script on the Slave node and verify that the PHP application is accessible through the VM’s IP address (take screenshot of this as evidence)
    2. Create a cron job to check the server’s uptime every 12 am.
+
+
+## PHP Laravel GitHub Repository:
+
+[LARAVEL REPOSITORY LINK](https://github.com/laravel/laravel)
+
