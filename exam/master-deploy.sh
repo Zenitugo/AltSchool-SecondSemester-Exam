@@ -53,7 +53,7 @@ EOF
 
 #CONFIGURATION OF PHP
     sudo sed -i 's/cgi.fix_pathinfo=0/' /etc/php/8.2/apache2/php.ini
-    #After configuring PHP we need to restart apche
+    #After configuring PHP we need to restart apache
     sudo systemctl restart apache2
     #Install composer since it is a php dependency manager that manages the dependencies and libraries that PHP applications require
     curl -sS https://getcomposer.org/installer | php
