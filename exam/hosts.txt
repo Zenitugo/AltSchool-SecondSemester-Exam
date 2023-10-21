@@ -1,2 +1,2 @@
 [slaveserver]
-slave-server ansible_host=192.168.33.11 ansible_connection=ssh
+slave-server ansible_host=192.168.33.11 ansible_connection=ssh ansible_ssh_pass=vagrant
