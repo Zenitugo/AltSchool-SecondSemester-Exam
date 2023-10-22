@@ -3,7 +3,20 @@
 - name: Deploy PHP Application and create Cron jobs on Slave node
   hosts: slave-server
   tasks:
-    - name: copy bash script named "master-deploy.sh"
+    #Create a cron job to check the server’s uptime every 12am.
+    - name: Create cron job to check uptime of the server every 12am
+      cron:
+        name: schedule to check uptime server
+        minute: "0"
+        hour: "0"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        job: "/usr/bin/uptime > /var/log/uptime_log 2>&1"
+        state: present
+
+    # Copy the bash script into the ansible directory and execute     
+    - name: copy bash script named "slave-deploy.sh"
       copy:
         src: /home/vagrant/master-deploy.sh
         dest: /home/vagrant/Ansible/master-deploy.sh
@@ -28,11 +41,3 @@
     - name: Report success
       debug:
         msg: "The page returned successfully and contains 'Laracast'"
-
-#Create a cron job to check the server’s uptime every 12 am.
-    - name: Create Cron Job
-      cron:
-        name: Check Server Uptime
-        minute: 0
-        hour: 0
-        job: uptime > /var/log/uptime.log 2>&1 
