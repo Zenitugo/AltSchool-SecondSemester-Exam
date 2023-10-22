@@ -11,13 +11,13 @@ I gave a command for the script to `cat` these configyrations into the **Vagrant
 
 I gave an instruction for the scripts to carry out the following commands:  `vagrant up` and `vagrant ssh master`
 
-## About Master-deploy.sh
+## About Master-deploy.sh and Slave-deploy.sh
 **This is a script that contains:**
 - The commands to automate the deployment of LAMP STACK on the master machine. This involved:
     
     1. Updating Apt Package Manager.
     2. Installing Apache.
-        - Ensuring apache is set to start at boot
+        - Ensuring Apache is set to start at boot
         - Configuring firewall
     3. Installing MySQL
         - Ensuring mysql starts and its enabled to run on system boot.
@@ -25,10 +25,10 @@ I gave an instruction for the scripts to carry out the following commands:  `vag
     4. Installing PHP with ppa:ondre
         This was done by first installing `software-properties-common`
     
-- To clone the repository I needed to configure apache and php first. This involved:
+- To clone the repository I needed to configure Apache and php first. This involved:
 
     1. Configuring PHP
-        - Restarting apache2 webserver
+        - Restarting the Apache2 webserver
         - Installing composer using `curl`
         - Moving the composer binary to the system directory.
     2. Configuring Apache
@@ -38,7 +38,7 @@ I gave an instruction for the scripts to carry out the following commands:  `vag
         - Dissabling apache 000-default site.
     3. Installing Laravel repository
         - creating a directory where the application will be cloned.
-        - Giving apache the ownership of the directory `/var/www/html/laravel`
+        - Giving Apache the ownership of the directory `/var/www/html/laravel`
         - Install git 
         - Cloning the repository from git hub.
         - Give Apache permissions over the directory.
@@ -53,6 +53,8 @@ I gave an instruction for the scripts to carry out the following commands:  `vag
     6. Cache the Configuration.
     7. Migrate the server
     8. Restart apache 2.
+ 
+The Master script is used to deploy LAMP stack on the master machine while the Slave script is used to deploy LAMP stack on the slave machine. The difference between the scripts is that the server name. Master-deploy.sh has the IP address for the Master VM and slave-deploy.sh has the IP address for the SlaveVM  
 
 ### PROOF OF DEPLOYMENT
 
@@ -61,13 +63,10 @@ I gave an instruction for the scripts to carry out the following commands:  `vag
 Ip address of master: 192.168.33.10
 
 
-
-
-
 ## About Ansible
 I created a directory called Ansible and in it I placed three files and a directory. The files were:
 
-- Inventory/hosts file: this file contains the ip address, password for the master machine to act as a controller to target the slave vms while running ansible-playbook.
+- Inventory/hosts file: this file contains the ip address, password for the master machine to act as a controller to target the slave VMs while running ansible-playbook.
 
 - ansible.cfg: This file is meant to override the ansible configuration in the  /etc directory. 
 
@@ -76,14 +75,15 @@ The directory named roles contained one directory called `ssmtp` and  inside of 
 
 
 ## About Playbook.yml
-The tasks carried out by the play book are:
-- Executing the bash script to deploy the laravel application
-- Verifying the application accessibility by giving a command for to register the content of the application and report success when the word 'Laracast' is found
-- Creating cron jobs to check the server up time
+The tasks carried out by the playbook are:
+- Executing the bash script to deploy the Laravel application
+- Verifying the application accessibility by giving a command to register the content of the application and report success when the word 'Laracast' is found
+- Creating cron jobs to check the server uptime
+- The playbook doesn't have sudo privileges `(become: yes)` because the bash scripts have commands with sudo privileges.
 
 
 ## USAGE OF BASH SCRIPT IN ANSIBLE
-To use the bash scrip in ansible, edit the servername in the virtual host with the Slave IP address.
+To use the bash scrip in Ansible, edit the server name in the virtual host with the Slave IP address.
 
 ### PROOF OF DEPLOYMENT
 ![laravel app deployed on slave](./Access%20to%20Laravel%20Application%20with%20Slave%20VM.png) 
