@@ -93,6 +93,7 @@ EOF
 #Create the folder that will hold the application
     sudo mkdir /var/www/html/laravel && cd /var/www/html/laravel
     sudo chown -R www-data:www-data /var/www/html/laravel
+
 #Clone the laravel application
     sudo apt-get update
     sudo apt-get install git composer -y
@@ -102,52 +103,61 @@ EOF
     composer install --no-dev
 
 #Give apache permissions over the laravel directory
-   sudo chown -R www-data:www-data  /var/www/html/laravel
-   sudo chown -R www-data:www-data /var/www
-   sudo chmod -R 775 /var/www/html/laravel
-   sudo chmod -R 777 /var/www/html/laravel/storage/*
-   sudo chmod -R 777 /var/www/html/laravel/bootstrap/*
-   sudo chmod -R 777 www-data:www-data  /var/www/html/laravel/bootstrap/cache
+    sudo chown -R www-data:www-data  /var/www/html/laravel
+    sudo chown -R www-data:www-data /var/www
+    sudo chmod -R 775 /var/www/html/laravel
+    sudo chmod -R 777 /var/www/html/laravel/storage/*
+    sudo chmod -R 777 /var/www/html/laravel/bootstrap/*
+    sudo chmod -R 777 www-data:www-data  /var/www/html/laravel/bootstrap/cache
 
 #Update ENV File and Generate An Encryption Key
-   sudo touch /var/www/html/laravel/.env
-   sudo cp .env.example .env
-   sudo php artisan key:generate
-
-
-#Configuration of mysql database
-   sudo mysql start
-
-  sudo mysql -u root<<EOF
-#Functions to execute a MYSQL query
-      execute_query() {
-          local query=$1
-          local database=$2
-
-          ALTER USER 'root'@'localhost'
-          IDENTIFIED WITH mysql_native_password BY 'DB_PASSWORD';
-          FLUSH PRIVILEGES;
-          mysql -u "$DB_USERNAME" -p "$DB_PASSWORD" "$database" -e "$query"
-}
-
-#Function to create a database
-           create_database(){
-           local database=$1
-           execute_query "CREATE DATABASE $database"
-}
-EOF
+    sudo touch /var/www/html/laravel/.env
+    sudo cp .env.example .env
+    sudo php artisan key:generate
 
 
 #Change some environmental variables in the .env file
-   sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE=zenitugo/' /var/www/html/laravel/.env
-   sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=sapphire/'  /var/www/html/laravel/.env
-   sudo sed -i 's/DB_USERNAME=root/DB_USERNAME=Debby/' /var/www/html/laravel/.env
+    sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE=zenitugo/' /var/www/html/laravel/.env
+    sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=sapphire/'  /var/www/html/laravel/.env
+    sudo sed -i 's/DB_USERNAME=root/DB_USERNAME=Debby/' /var/www/html/laravel/.env
+
+#Configuration of mysql database
+    sudo systemctl start mysql
+
+# Function to execute a MySQL query
+    sudo mysql -u root<<EOF
+
+# MySQL username and password
+    DB_USERNAME="Debby"
+    DB_PASSWORD="sapphire"
+
+execute_query() {
+    local query="$1"
+    local database="$2"
+    mysql -u "$DB_USERNAME" -p"$DB_PASSWORD" "$database" -e "$query"
+}
+
+# Function to create a database
+create_database() {
+    local database="$1"
+    execute_query "CREATE DATABASE IF NOT EXISTS $database"
+}
+
+#Grant privileges for creating databases
+    execute_query "GRANT CREATE DATABASE ON *.* TO '$DB_USERNAME'@'localhost';" "mysql"
+
+# Create a database
+    execute_query "CREATE DATABASE IF NOT EXISTS zenitugo;" "mysql"
+
+# Start MySQL service
+    sudo systemctl start mysql
+EOF
 
 #CACHE THE CONFIGURATIONS MADE
-   php artisan config:cache
+    php artisan config:cache
 
 #MIGRATING THE SERVER
-   php artisan migrate
+    php artisan migrate
 
 #RESTART APACHE
-   sudo systemctl restart apache2
+    sudo systemctl restart apache2
