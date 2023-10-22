@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Start the process by initialising vagrant  in your chosen directory
+#Start the process by initialising vagrant in your chosen directory
    vagrant init ubuntu/focal64
 
    cat <<EOF  >  Vagrantfile
