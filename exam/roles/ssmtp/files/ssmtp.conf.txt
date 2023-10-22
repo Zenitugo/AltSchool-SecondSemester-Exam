@@ -1,8 +1,0 @@
-root=ugochiukaegbu19@gmail.com
-mail=smtp.gmail.com:587
-hostname=vagrant
-AuthUser=ugochiukaegbu19@gmail.com
-AuthPass=
-FromLineOverride=yes
-UseTLS=YES
-UseSTARTTLS=YES
