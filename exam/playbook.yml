@@ -29,11 +29,6 @@
       debug:
         msg: "The page returned successfully and contains 'Laracast'"
 
-#Configuration of SSMTP
-    - name: Configure ssmtp
-      include_role:
-        name: ssmtp
-
 #Create a cron job to check the server’s uptime every 12 am.
     - name: Create Cron Job
       cron:
