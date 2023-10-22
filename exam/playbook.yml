@@ -3,8 +3,8 @@
 - name: Deploy PHP Application and create Cron jobs on Slave node
   hosts: slave-server
   tasks:
-    #Create a cron job to check the server’s uptime every 12am.
-    - name: Create cron job to check uptime of the server every 12am
+    #Create a cron job to check the server’s uptime every 12 am.
+    - name: Create a cron job to check the uptime of the server every 12 am
       cron:
         name: schedule to check uptime server
         minute: "0"
@@ -18,12 +18,12 @@
     # Copy the bash script into the ansible directory and execute     
     - name: copy bash script named "slave-deploy.sh"
       copy:
-        src: /home/vagrant/master-deploy.sh
-        dest: /home/vagrant/Ansible/master-deploy.sh
+        src: /home/vagrant/slave-deploy.sh
+        dest: /home/vagrant/Ansible/slave-deploy.sh
         mode: '0777'
 
     - name: Execute bash script
-      shell: bash /home/vagrant/Ansible/master-deploy.sh
+      shell: bash /home/vagrant/Ansible/slave-deploy.sh
       ignore_errors: yes
 
 # Verify PHP Application Accessibility
