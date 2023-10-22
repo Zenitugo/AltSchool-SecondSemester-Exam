@@ -18,9 +18,7 @@ Vagrant.configure("2") do |config|
     sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     sudo systemctl restart sshd
     sudo apt-get install -y avahi-daemon libnss-mdns
-    sudo apt-get install ssmtp -y
-    sudo apt-get install mail-utils -y
-    sudo apt-get install mutt -y
+    sudo apt-get install cron 
     SHELL
   end
 

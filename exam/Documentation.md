@@ -87,3 +87,6 @@ To use the bash scrip in ansible, edit the servername in the virtual host with t
 
 ### PROOF OF DEPLOYMENT
 ![laravel app deployed on slave](./Access%20to%20Laravel%20Application%20with%20Slave%20VM.png) 
+
+### PROOF OF UPTIME SERVER
+![cron jobs](./uptime%20log.png)
