@@ -68,7 +68,7 @@ I created a directory called Ansible and in it I placed three files and a direct
 
 - Inventory/hosts file: this file contains the ip address, password for the master machine to act as a controller to target the slave VMs while running ansible-playbook.
 
-- ansible.cfg: This file is meant to override the ansible configuration in the  /etc directory. 
+- ansible.cfg: This file is meant to override the ansible configuration in the `/etc` directory. 
 
 - playbbok.yml
 The directory named roles contained one directory called `ssmtp` and  inside of it contained another two directories named `files` and `task`. The roles directory contained the configuration of ssmtp so that I could schedule cron jobs to check the server uptime.
@@ -79,11 +79,8 @@ The tasks carried out by the playbook are:
 - Executing the bash script to deploy the Laravel application
 - Verifying the application accessibility by giving a command to register the content of the application and report success when the word 'Laracast' is found
 - Creating cron jobs to check the server uptime
-- The playbook doesn't have sudo privileges `(become: yes)` because the bash scripts have commands with sudo privileges.
+- The playbook doesn't have sudo privileges `(become: yes)` because the bash scripts have commands with sudo privileges. This decision was taken because I was having issues executing my playbook. The command `composer install` does not approve giving sudo privileges to execute this command and if I must continue, I must type a 'YES' to approve the installation. The command does not allow a '-y' flag option so I removed `become:yes` from my playbook.
 
-
-## USAGE OF BASH SCRIPT IN ANSIBLE
-To use the bash scrip in Ansible, edit the server name in the virtual host with the Slave IP address.
 
 ### PROOF OF DEPLOYMENT
 ![laravel app deployed on slave](./Access%20to%20Laravel%20Application%20with%20Slave%20VM.png) 
