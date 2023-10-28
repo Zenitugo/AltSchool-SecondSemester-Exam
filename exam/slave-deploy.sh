@@ -157,7 +157,7 @@ EOF
     php artisan config:cache
 
 #MIGRATING THE SERVER
-    php artisan migrate
+    php artisan migrate --force
 
 #RESTART APACHE
     sudo systemctl restart apache2
